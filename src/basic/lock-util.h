@@ -2,6 +2,7 @@
 #pragma once
 
 #include <fcntl.h>
+#include <sys/file.h>
 
 typedef struct LockFile {
         int dir_fd;
