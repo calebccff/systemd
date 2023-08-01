@@ -644,7 +644,7 @@ static int names_vio(sd_device *dev, const char *prefix, bool test) {
                 return log_device_debug_errno(dev, SYNTHETIC_ERRNO(EINVAL),
                                               "VIO bus ID and slot ID have invalid length: %s", syspath);
 
-        s = strndupa(s, 8);
+        s = strndupa_safe(s, 8);
         if (!in_charset(s, HEXDIGITS))
                 return log_device_debug_errno(dev, SYNTHETIC_ERRNO(EINVAL),
                                               "VIO bus ID and slot ID contain invalid characters: %s", s);
@@ -706,17 +706,17 @@ static int names_platform(sd_device *dev, const char *prefix, bool test) {
                 /* 3 char vendor string */
                 if (r != 10)
                         return -EINVAL;
-                vendor = strndupa(p, 3);
-                model_str = strndupa(p + 3, 4);
-                instance_str = strndupa(p + 8, 2);
+                vendor = strndupa_safe(p, 3);
+                model_str = strndupa_safe(p + 3, 4);
+                instance_str = strndupa_safe(p + 8, 2);
                 validchars = UPPERCASE_LETTERS;
         } else if (p[8] == ':') {
                 /* 4 char vendor string */
                 if (r != 11)
                         return -EINVAL;
-                vendor = strndupa(p, 4);
-                model_str = strndupa(p + 4, 4);
-                instance_str = strndupa(p + 9, 2);
+                vendor = strndupa_safe(p, 4);
+                model_str = strndupa_safe(p + 4, 4);
+                instance_str = strndupa_safe(p + 9, 2);
                 validchars = UPPERCASE_LETTERS DIGITS;
         } else
                 return -EOPNOTSUPP;
